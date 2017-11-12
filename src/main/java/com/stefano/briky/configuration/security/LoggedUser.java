@@ -14,12 +14,12 @@ public class LoggedUser implements UserDetails {
     private final String name;
     private final String surname;
 
-    public LoggedUser(Users users) {
-        this.id = users.getId();
-        this.password = users.getPassword();
-        this.email = users.getEmail();
-        this.name = users.getName();
-        this.surname = users.getSurname();
+    public LoggedUser(Users user) {
+        this.id = user.getId();
+        this.password = user.getPassword();
+        this.email = user.getEmail();
+        this.name = user.getName();
+        this.surname = user.getSurname();
     }
 
     @Override

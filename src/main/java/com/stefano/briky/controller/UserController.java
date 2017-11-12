@@ -57,7 +57,7 @@ public class UserController {
     public UserJson updateUserPassword(@AuthenticationPrincipal LoggedUser currentUser, @RequestBody UserPasswordJson json) {
         Users user = userRepository.getOne(currentUser.getId());
 
-        String currentPwd = passwordEncoder.encode(json.getCurrentPassword() + currentUser.getId());
+        String currentPwd = passwordEncoder.encode(json.getCurrentPassword());
 
         if (!user.getPassword().equals(currentPwd)) {
             // TODO eccezione
