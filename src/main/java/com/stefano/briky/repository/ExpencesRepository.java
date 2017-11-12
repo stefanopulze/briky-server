@@ -1,0 +1,21 @@
+package com.stefano.briky.repository;
+
+import com.stefano.briky.model.Expenses;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.Date;
+
+public interface ExpencesRepository extends JpaRepository<Expenses, Integer> {
+
+    Expenses findByIdAndUserId(Integer id, Integer userId);
+
+    @Query("select sum(value) from Expenses where userId=:userId and createdAt>=:startDate and createdAt<=:endDate")
+    Double monthlySum(
+            @Param("userId") Integer userId,
+            @Param("startDate") Date startDate,
+            @Param("endDate") Date endDate
+    );
+
+}
