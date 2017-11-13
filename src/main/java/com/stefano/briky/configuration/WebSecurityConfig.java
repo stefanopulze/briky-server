@@ -44,6 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .requestCache().disable()
                 .formLogin().disable()
                 .httpBasic().disable()
+                .cors().and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers("/login").permitAll()
