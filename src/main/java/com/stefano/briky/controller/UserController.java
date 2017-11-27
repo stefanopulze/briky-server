@@ -78,6 +78,6 @@ public class UserController {
 
     @RequestMapping(value = "/user/tags")
     public List<Tags> mostUsedTag(@AuthenticationPrincipal LoggedUser user) {
-        return tagRepository.findForUser(user.getId());
+        return tagRepository.findByUserId(user.getId());
     }
 }

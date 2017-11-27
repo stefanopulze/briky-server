@@ -23,16 +23,13 @@ CREATE TABLE `tokens` (
 );
 
 CREATE TABLE `tags` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `slug` varchar(45) DEFAULT NULL,
+  `user_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `users_tags` (
-  `user_id` INT UNSIGNED NOT NULL,
-  `tag_id` INT UNSIGNED NOT NULL,
-  PRIMARY KEY (`user_id`, `tag_id`)
-);
 
 CREATE TABLE `expenses` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,

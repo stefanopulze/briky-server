@@ -2,7 +2,10 @@ package com.stefano.briky.model;
 
 import com.stefano.briky.json.ExpenceJson;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class Expenses {
@@ -17,6 +20,8 @@ public class Expenses {
     private Date createdAt;
     private Date updatedAt;
 
+    private List<Tags> tags = new ArrayList<>();
+
     public Expenses() {
     }
 
@@ -28,6 +33,12 @@ public class Expenses {
         description = json.getDescription();
         createdAt = new Date();
         updatedAt = new Date();
+
+        tags = json.getTags()
+                .stream()
+                .map(Tags::new)
+                .collect(Collectors.toList());
+                //.forEach(tag -> tag.setExpence(this));
     }
 
     @Id
@@ -118,6 +129,20 @@ public class Expenses {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "expenses_tags",
+            joinColumns = { @JoinColumn(name = "expense_id", referencedColumnName = "id") },
+            inverseJoinColumns = { @JoinColumn(name = "tag_id", referencedColumnName = "id") }
+    )
+    public List<Tags> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tags> tags) {
+        this.tags = tags;
     }
 
     @Override

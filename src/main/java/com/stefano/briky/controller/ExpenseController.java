@@ -3,13 +3,18 @@ package com.stefano.briky.controller;
 import com.stefano.briky.configuration.security.LoggedUser;
 import com.stefano.briky.json.ExpenceJson;
 import com.stefano.briky.model.Expenses;
+import com.stefano.briky.model.Tags;
 import com.stefano.briky.repository.ExpencesRepository;
+import com.stefano.briky.service.TagService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.AccessException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class ExpenseController {
@@ -17,11 +22,25 @@ public class ExpenseController {
     @Autowired
     ExpencesRepository expencesRepository;
 
+    @Autowired
+    TagService tagService;
+
+    @Autowired
+    ModelMapper modelMapper;
+
 
     @RequestMapping(value = "/expense", method = RequestMethod.POST)
     public Expenses createExpense(@AuthenticationPrincipal LoggedUser principal, @RequestBody ExpenceJson json) {
+        List<Tags> tags = json.getTags()
+                .stream()
+                .map(tag -> modelMapper.map(tag, Tags.class))
+                .collect(Collectors.toList());
+
+        List<Tags> checkedTags = tagService.createIfNotExists(tags, principal);
+
         Expenses expense = new Expenses(json);
         expense.setUserId(principal.getId());
+        expense.setTags(checkedTags);
 
         expencesRepository.save(expense);
 

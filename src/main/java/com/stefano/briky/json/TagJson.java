@@ -1,6 +1,6 @@
 package com.stefano.briky.json;
 
-public class Tag {
+public class TagJson {
 
     private int id;
     private String name;

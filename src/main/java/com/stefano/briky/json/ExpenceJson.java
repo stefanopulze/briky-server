@@ -1,5 +1,8 @@
 package com.stefano.briky.json;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ExpenceJson {
 
     private double value;
@@ -7,6 +10,7 @@ public class ExpenceJson {
     private double longitude;
     private int accuracy;
     private String description;
+    private List<TagJson> tags = new ArrayList<>();
 
     public double getValue() {
         return value;
@@ -47,4 +51,13 @@ public class ExpenceJson {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public List<TagJson> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<TagJson> tags) {
+        this.tags = tags;
+    }
+
 }

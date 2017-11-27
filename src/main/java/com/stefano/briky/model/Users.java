@@ -1,9 +1,9 @@
 package com.stefano.briky.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public class Users {
@@ -14,7 +14,14 @@ public class Users {
     private String password;
     private Date updatedAt;
 
-    private List<Tags> tags = new ArrayList<>();
+    private Set<Tags> tags = new HashSet<>();
+
+    public Users() {
+    }
+
+    public Users(Integer userId) {
+        this.id = userId;
+    }
 
     @Id
     @Column(name = "id", nullable = false)
@@ -76,18 +83,23 @@ public class Users {
         this.updatedAt = updatedAt;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name = "users_tags",
-            joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") },
-            inverseJoinColumns = { @JoinColumn(name = "tag_id", referencedColumnName = "id") }
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "tag_id") }
     )
-    public List<Tags> getTags() {
+    public Set<Tags> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tags> tags) {
+    public void setTags(Set<Tags> tags) {
         this.tags = tags;
+    }
+
+    public void addTag(Tags tag) {
+        tags.add(tag);
+        tag.setUser(this);
     }
 
     @Override

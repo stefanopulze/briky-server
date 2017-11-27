@@ -3,6 +3,8 @@ package com.stefano.briky.configuration.security;
 import com.stefano.briky.model.Users;
 import com.stefano.briky.repository.TokenRepository;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -11,6 +13,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class TokenAuthorizationFilter extends OncePerRequestFilter {
@@ -31,8 +35,13 @@ public class TokenAuthorizationFilter extends OncePerRequestFilter {
 
             if (user.isPresent()) {
                 LoggedUser loggedUser = new LoggedUser(user.get());
+                List<GrantedAuthority> authorities = new ArrayList<>();
+                authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(loggedUser, null, null);
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        loggedUser,
+                        null,
+                        authorities);
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
