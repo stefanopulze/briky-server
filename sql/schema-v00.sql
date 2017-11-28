@@ -13,13 +13,7 @@ CREATE TABLE `tokens` (
   `user_id` INT UNSIGNED NOT NULL,
   `value` VARCHAR(160) NOT NULL,
   `created_at` TIMESTAMP NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_token_user_idx` (`user_id` ASC),
-  CONSTRAINT `fk_token_user`
-  FOREIGN KEY (`user_id`)
-  REFERENCES `briky`.`users` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+  PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `tags` (
@@ -49,3 +43,6 @@ CREATE TABLE `expenses_tags` (
   `tag_id` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`expense_id`, `tag_id`)
 );
+
+insert into users (email, password, name, surname)
+values('stefano.pulze87@gmail.com', '$2a$04$r75wwsbzxgaux1r7A.14k.RJvV5OzljbLFvFcva5sB9chJ1awJCSK', 'Stefano','Pulze');

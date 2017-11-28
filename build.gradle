@@ -33,7 +33,10 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
 
+	// Database
 	compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
+	//compile group: 'org.postgresql', name: 'postgresql', version: '42.1.4'
+
 
 	// Utils
 	compile group: 'org.modelmapper', name: 'modelmapper', version: '1.1.1'

@@ -1,6 +1,10 @@
 
 spring.datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/briky?useSSL=false
+    url: jdbc:mysql://localhost:3306/briky_local_test?useSSL=false
     username: root
     password: root
+
+
+# Logging
+logging.level.org.hibernate.SQL: debug
