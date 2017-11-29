@@ -21,6 +21,6 @@ public interface ExpencesRepository extends JpaRepository<Expenses, Integer> {
     );
 
 
-    @Query("select e from Expenses e where e.userId=:userId order by e.createdAt")
+    @Query("select e from Expenses e where e.userId=:userId order by e.createdAt desc")
     List<Expenses> findLast( @Param("userId") int userId, Pageable page);
 }
