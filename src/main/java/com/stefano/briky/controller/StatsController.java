@@ -49,7 +49,7 @@ public class StatsController {
                 expencesRepository.monthlySum(user.getId(), pagination.getStartDate(), pagination.getEndDate())
         );
 
-        List<Expenses> lastExpenses = expenseService.findLast(20);
+        List<Expenses> lastExpenses = expenseService.findLast(10);
         result.setLastExpenses(
                 lastExpenses.stream()
                         .map(expense -> modelMapper.map(expense, ExpenceJson.class))

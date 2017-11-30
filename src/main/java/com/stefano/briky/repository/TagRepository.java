@@ -15,4 +15,6 @@ public interface TagRepository extends JpaRepository<Tags, Integer> {
 
     List<Tags> findByUserId(int userId);
 
+    @Query("select count(tag.id) from Expenses e join e.tags tag where tag.id = :tagId")
+    Integer countById(@Param("tagId") int tagId);
 }

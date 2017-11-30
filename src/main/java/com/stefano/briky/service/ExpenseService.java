@@ -1,6 +1,7 @@
 package com.stefano.briky.service;
 
 import com.stefano.briky.configuration.security.LoggedUser;
+import com.stefano.briky.json.ExpenceJson;
 import com.stefano.briky.model.Expenses;
 import com.stefano.briky.repository.ExpencesRepository;
 import com.stefano.briky.utils.SecurityUtils;
@@ -23,4 +24,7 @@ public class ExpenseService {
 
     }
 
+    public List<Expenses> findLastByTagId(int limit, int tagId) {
+        return expencesRepository.findLastByTagId(tagId, PageRequest.of(0, limit));
+    }
 }

@@ -46,4 +46,7 @@ public class TagService {
     }
 
 
+    public Integer countTagUsage(int tagId) {
+        return tagRepository.countById(tagId);
+    }
 }

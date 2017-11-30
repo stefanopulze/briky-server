@@ -1,6 +1,8 @@
 package com.stefano.briky.repository;
 
+import com.stefano.briky.json.ExpenceJson;
 import com.stefano.briky.model.Expenses;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,4 +25,8 @@ public interface ExpencesRepository extends JpaRepository<Expenses, Integer> {
 
     @Query("select e from Expenses e where e.userId=:userId order by e.createdAt desc")
     List<Expenses> findLast( @Param("userId") int userId, Pageable page);
+
+    @Query("select e from Expenses e join e.tags tag where tag.id=:tagId order by e.createdAt desc")
+    List<Expenses> findLastByTagId(@Param("tagId") int tagId, Pageable page);
+
 }
