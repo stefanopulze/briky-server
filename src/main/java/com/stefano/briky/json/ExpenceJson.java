@@ -5,12 +5,21 @@ import java.util.List;
 
 public class ExpenceJson {
 
+    private int id;
     private double value;
     private double latitude;
     private double longitude;
     private int accuracy;
     private String description;
     private List<TagJson> tags = new ArrayList<>();
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public double getValue() {
         return value;
