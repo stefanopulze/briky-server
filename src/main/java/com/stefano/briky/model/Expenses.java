@@ -1,5 +1,6 @@
 package com.stefano.briky.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.stefano.briky.json.ExpenceJson;
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -111,6 +112,7 @@ public class Expenses {
         this.description = description;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'hh:mm:ssZ")
     @Basic
     @Column(name = "created_at", nullable = true)
     public Date getCreatedAt() {
