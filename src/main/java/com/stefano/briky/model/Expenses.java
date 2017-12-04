@@ -32,7 +32,11 @@ public class Expenses {
         longitude = json.getLongitude();
         accuracy = json.getAccuracy();
         description = json.getDescription();
-        createdAt = new Date();
+        if(null == json.getCreatedAt()) {
+            createdAt = new Date();
+        } else {
+            createdAt = json.getCreatedAt();
+        }
         updatedAt = new Date();
 
         tags = json.getTags()
