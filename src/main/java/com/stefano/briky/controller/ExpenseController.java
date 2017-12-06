@@ -70,6 +70,19 @@ public class ExpenseController {
         return expense;
     }
 
+    @RequestMapping(value = "/expense/{id}", method = RequestMethod.DELETE)
+    public void updateExpense(@AuthenticationPrincipal LoggedUser principal,
+                                  @PathVariable("id") int expenseId) throws AccessException {
+
+        Expenses expense = expencesRepository.findByIdAndUserId(expenseId, principal.getId());
+
+        if(null == expense) {
+            throw new AccessException("L'id della spesa indicata non appartiene a te");
+        }
+
+        expencesRepository.delete(expense);
+    }
+
     private List<Tags> convetToTags(List<TagJson> tags) {
         return tags.stream()
                 .map(tag -> modelMapper.map(tag, Tags.class))
