@@ -116,7 +116,6 @@ public class Expenses {
         this.description = description;
     }
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'hh:mm:ssZ")
     @Basic
     @Column(name = "created_at", nullable = true)
     public Date getCreatedAt() {
@@ -137,7 +136,7 @@ public class Expenses {
         this.updatedAt = updatedAt;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "expenses_tags",
             joinColumns = { @JoinColumn(name = "expense_id", referencedColumnName = "id") },
