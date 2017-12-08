@@ -75,7 +75,7 @@ public class Tags {
     }
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<Expenses> getExpenses() {
         return expenses;
     }

@@ -137,7 +137,7 @@ public class Expenses {
         this.updatedAt = updatedAt;
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "expenses_tags",
             joinColumns = { @JoinColumn(name = "expense_id", referencedColumnName = "id") },
