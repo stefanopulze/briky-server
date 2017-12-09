@@ -9,17 +9,15 @@ import com.stefano.briky.json.TagExpenseValue;
 import com.stefano.briky.model.Expenses;
 import com.stefano.briky.repository.ExpencesRepository;
 import com.stefano.briky.service.ExpenseService;
+import com.stefano.briky.utils.BrikyDateUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,28 +50,30 @@ public class StatsController {
     @RequestMapping(value = "/stat/monthly/expense")
     public List<TagExpenseValue> monthlyExpenses(
             @AuthenticationPrincipal LoggedUser user,
-            @RequestParam(required = false) Integer year,
-            @RequestParam(required = false) Integer month) {
+            DateRequestParam pagination) {
 
-        if(null == year || year <= 2010) {
-            Calendar calendar = GregorianCalendar.getInstance();
-
-            year = calendar.get(Calendar.YEAR);
-            month = calendar.get(Calendar.MONTH);
+        if(null == pagination) {
+            pagination = BrikyDateUtils.buildCurrentMonth();
         }
 
-
-        return statsDao.monthlyTagValue(user.getId(), year, month);
+        return statsDao.monthlyTagValue(user.getId(), pagination.getYear(), pagination.getMonth());
     }
 
     @RequestMapping(value = "/stat/dashboard")
-    public DashboardJson dashboardStats(DatePagination pagination, @AuthenticationPrincipal LoggedUser user) {
+    public DashboardJson dashboardStats(DateRequestParam pagination, @AuthenticationPrincipal LoggedUser user) {
         DashboardJson result = new DashboardJson();
 
-        pagination = DatePagination.monthPagination();
+        if(null == pagination || pagination.isEmpty()) {
+            pagination = BrikyDateUtils.buildCurrentMonth();
+        }
 
-        result.setMonthExpensesValue(
-                expencesRepository.monthlySum(user.getId(), pagination.getStartDate(), pagination.getEndDate())
+        DateRequestParam previousMonth = pagination.clone().previousMonth();
+
+        result.setCurrentMonthValue(
+                expencesRepository.monthlySum(user.getId(), pagination)
+        );
+        result.setPreviousMonthValue(
+                expencesRepository.monthlySum(user.getId(), previousMonth)
         );
 
         List<Expenses> lastExpenses = expenseService.findLast(10);
@@ -82,7 +82,7 @@ public class StatsController {
                         .map(expense -> modelMapper.map(expense, ExpenceJson.class))
                         .collect(Collectors.toList()));
 
-        result.setMonthTagValue(monthlyExpenses(user, null, null));
+        result.setMonthTagValue(monthlyExpenses(user, previousMonth));
         return result;
     }
 

@@ -4,17 +4,26 @@ import java.util.List;
 
 public class DashboardJson {
 
-    private Double monthExpensesValue;
+    private Integer currentMonthValue;
+    private Integer previousMonthValue;
+
     private List<ExpenceJson> lastExpenses;
     private List<TagExpenseValue> monthTagValue;
 
-
-    public Double getMonthExpensesValue() {
-        return monthExpensesValue;
+    public Integer getCurrentMonthValue() {
+        return currentMonthValue;
     }
 
-    public void setMonthExpensesValue(Double monthExpensesValue) {
-        this.monthExpensesValue = monthExpensesValue;
+    public void setCurrentMonthValue(Integer currentMonthValue) {
+        this.currentMonthValue = currentMonthValue;
+    }
+
+    public Integer getPreviousMonthValue() {
+        return previousMonthValue;
+    }
+
+    public void setPreviousMonthValue(Integer previousMonthValue) {
+        this.previousMonthValue = previousMonthValue;
     }
 
     public List<ExpenceJson> getLastExpenses() {
