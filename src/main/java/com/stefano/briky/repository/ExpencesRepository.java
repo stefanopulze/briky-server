@@ -32,6 +32,6 @@ public interface ExpencesRepository extends JpaRepository<Expenses, Integer> {
 
     @Query("select sum(value) from Expenses where userId=:userId " +
             "and year(createdAt)=:#{#pagination.year} " +
-            "and month(createdAt)=:#{#pagination.month}")
+            "and month(createdAt)=:#{#pagination.monthSql}")
     Integer monthlySum(@Param("userId") int userId, @Param("pagination") DateRequestParam pagination);
 }

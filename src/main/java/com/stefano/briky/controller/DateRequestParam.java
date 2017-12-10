@@ -34,6 +34,10 @@ public class DateRequestParam implements Cloneable {
         this.month = month;
     }
 
+    public Integer getMonthSql() {
+        return this.month + 1;
+    }
+
     public DateRequestParam addYear(int year) {
        this.year += year;
        return this;
