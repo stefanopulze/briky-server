@@ -1,7 +1,9 @@
 package com.stefano.briky.service;
 
 import com.stefano.briky.configuration.security.LoggedUser;
-import com.stefano.briky.json.ExpenceJson;
+import com.stefano.briky.controller.MonthFilter;
+import com.stefano.briky.dao.ExpenseDao;
+import com.stefano.briky.json.MonthValue;
 import com.stefano.briky.model.Expenses;
 import com.stefano.briky.repository.ExpencesRepository;
 import com.stefano.briky.utils.SecurityUtils;
@@ -17,6 +19,10 @@ public class ExpenseService {
     @Autowired
     ExpencesRepository expencesRepository;
 
+    @Autowired
+    ExpenseDao expenseDao;
+
+
     public List<Expenses> findLast(int limit) {
         LoggedUser user = SecurityUtils.getUser();
 
@@ -26,5 +32,9 @@ public class ExpenseService {
 
     public List<Expenses> findLastByTagId(int limit, int tagId) {
         return expencesRepository.findLastByTagId(tagId, PageRequest.of(0, limit));
+    }
+
+    public List<MonthValue> yearlySum(LoggedUser user, MonthFilter pagination) {
+        return expenseDao.yearlySum(user.getId(), pagination);
     }
 }

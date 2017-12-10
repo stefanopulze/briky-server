@@ -1,19 +1,19 @@
 package com.stefano.briky.controller;
 
-public class DateRequestParam implements Cloneable {
+public class MonthFilter implements Cloneable {
 
     public static final int MONTH_COUNT = 11;
     private Integer year;
     private Integer month;
 
-    public DateRequestParam() {
+    public MonthFilter() {
     }
 
-    public DateRequestParam(Integer year) {
+    public MonthFilter(Integer year) {
         this.year = year;
     }
 
-    public DateRequestParam(Integer year, Integer month) {
+    public MonthFilter(Integer year, Integer month) {
         this.year = year;
         this.month = month;
     }
@@ -38,13 +38,13 @@ public class DateRequestParam implements Cloneable {
         return this.month + 1;
     }
 
-    public DateRequestParam addYear(int year) {
+    public MonthFilter addYear(int year) {
        this.year += year;
        return this;
     }
 
     // TODO eseguire test integrativi
-    public DateRequestParam addMonth(int month) {
+    public MonthFilter addMonth(int month) {
         this.month += month;
 
         if(this.month > MONTH_COUNT) {
@@ -55,7 +55,7 @@ public class DateRequestParam implements Cloneable {
         return this;
     }
 
-    public DateRequestParam previousMonth() {
+    public MonthFilter previousMonth() {
         this.month--;
 
         if(this.month < 0) {
@@ -67,8 +67,8 @@ public class DateRequestParam implements Cloneable {
     }
 
     @Override
-    protected DateRequestParam clone() {
-        DateRequestParam object = new DateRequestParam();
+    protected MonthFilter clone() {
+        MonthFilter object = new MonthFilter();
         object.year = this.year;
         object.month = this.month;
         return object;
@@ -84,5 +84,9 @@ public class DateRequestParam implements Cloneable {
 
     public boolean isEmpty() {
         return year == null;
+    }
+
+    public boolean isValidMonth() {
+        return month != null && month >= 0 && month <= 11;
     }
 }

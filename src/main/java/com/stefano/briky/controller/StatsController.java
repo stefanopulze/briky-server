@@ -2,10 +2,7 @@ package com.stefano.briky.controller;
 
 import com.stefano.briky.configuration.security.LoggedUser;
 import com.stefano.briky.dao.StatsDao;
-import com.stefano.briky.json.DashboardJson;
-import com.stefano.briky.json.DatePagination;
-import com.stefano.briky.json.ExpenceJson;
-import com.stefano.briky.json.TagExpenseValue;
+import com.stefano.briky.json.*;
 import com.stefano.briky.model.Expenses;
 import com.stefano.briky.repository.ExpencesRepository;
 import com.stefano.briky.service.ExpenseService;
@@ -14,7 +11,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
@@ -50,7 +46,7 @@ public class StatsController {
     @RequestMapping(value = "/stat/monthly/expense")
     public List<TagExpenseValue> monthlyExpenses(
             @AuthenticationPrincipal LoggedUser user,
-            DateRequestParam pagination) {
+            MonthFilter pagination) {
 
         if(null == pagination) {
             pagination = BrikyDateUtils.buildCurrentMonth();
@@ -59,15 +55,27 @@ public class StatsController {
         return statsDao.monthlyTagValue(user.getId(), pagination.getYear(), pagination.getMonth());
     }
 
+    @RequestMapping(value = "/stat/values/year")
+    public List<MonthValue> valueYear(
+            @AuthenticationPrincipal LoggedUser user,
+            MonthFilter pagination) {
+
+        if(null == pagination) {
+            pagination = BrikyDateUtils.buildCurrentMonth();
+        }
+
+        return expenseService.yearlySum(user, pagination);
+    }
+
     @RequestMapping(value = "/stat/dashboard")
-    public DashboardJson dashboardStats(DateRequestParam pagination, @AuthenticationPrincipal LoggedUser user) {
+    public DashboardJson dashboardStats(MonthFilter pagination, @AuthenticationPrincipal LoggedUser user) {
         DashboardJson result = new DashboardJson();
 
         if(null == pagination || pagination.isEmpty()) {
             pagination = BrikyDateUtils.buildCurrentMonth();
         }
 
-        DateRequestParam previousMonth = pagination.clone().previousMonth();
+        MonthFilter previousMonth = pagination.clone().previousMonth();
 
         result.setCurrentMonthValue(
                 expencesRepository.monthlySum(user.getId(), pagination)

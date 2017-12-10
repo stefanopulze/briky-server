@@ -1,9 +1,7 @@
 package com.stefano.briky.repository;
 
-import com.stefano.briky.controller.DateRequestParam;
-import com.stefano.briky.json.ExpenceJson;
+import com.stefano.briky.controller.MonthFilter;
 import com.stefano.briky.model.Expenses;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -33,5 +31,5 @@ public interface ExpencesRepository extends JpaRepository<Expenses, Integer> {
     @Query("select sum(value) from Expenses where userId=:userId " +
             "and year(createdAt)=:#{#pagination.year} " +
             "and month(createdAt)=:#{#pagination.monthSql}")
-    Integer monthlySum(@Param("userId") int userId, @Param("pagination") DateRequestParam pagination);
+    Integer monthlySum(@Param("userId") int userId, @Param("pagination") MonthFilter pagination);
 }
