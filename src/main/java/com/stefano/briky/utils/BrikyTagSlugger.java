@@ -13,12 +13,15 @@ public class BrikyTagSlugger implements TagSlugger {
 
     @Override
     public String calculateSlug(Tags tag) {
+        String slug = null;
+
         if(tag != null && tag.getSlug() != null) {
-            return tag.getSlug();
+            slug = tag.getSlug();
         } else if(tag != null && tag.getSlug() == null) {
-            return tag.getName().toLowerCase();
-        } else {
-            return null;
+            slug = tag.getName().toLowerCase();
+            slug = slug.replaceAll("\\s", "-");
         }
+
+        return slug;
     }
 }

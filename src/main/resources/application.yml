@@ -1,8 +1,8 @@
 
 spring.datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/briky_local_test?useSSL=false
-    url: jdbc:mysql://localhost:3306/briky_local_production?useSSL=false
+    url: jdbc:mysql://localhost:3306/briky_local_test?useSSL=false
+#    url: jdbc:mysql://localhost:3306/briky_local_production?useSSL=false
     username: root
     password: root
 

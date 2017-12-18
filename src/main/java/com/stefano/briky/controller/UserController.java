@@ -76,8 +76,14 @@ public class UserController {
     }
 
 
+    /**
+     * @deprecated Usare TagController/tags
+     * @param user
+     * @return
+     */
+    @Deprecated
     @RequestMapping(value = "/user/tags")
     public List<Tags> mostUsedTag(@AuthenticationPrincipal LoggedUser user) {
-        return tagRepository.findByUserId(user.getId());
+        return tagRepository.findByUserIdOrderByName(user.getId());
     }
 }

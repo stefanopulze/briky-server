@@ -41,6 +41,11 @@ public class TagController {
         return modelMapper.map(tag, TagJson.class);
     }
 
+    @RequestMapping(value = "/tags")
+    public List<Tags> mostUsedTag(@AuthenticationPrincipal LoggedUser user) {
+        return tagRepository.findByUserIdOrderByName(user.getId());
+    }
+
     @RequestMapping(value = "/tag/{id}", method = RequestMethod.GET)
     public TagDetailJson createTag(@AuthenticationPrincipal LoggedUser principal, @PathVariable int id) {
         Tags tag = tagRepository.getOne(id);

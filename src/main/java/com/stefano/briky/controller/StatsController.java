@@ -90,7 +90,7 @@ public class StatsController {
                         .map(expense -> modelMapper.map(expense, ExpenceJson.class))
                         .collect(Collectors.toList()));
 
-        result.setMonthTagValue(monthlyExpenses(user, previousMonth));
+        //result.setMonthTagValue(monthlyExpenses(user, previousMonth));
         return result;
     }
 
