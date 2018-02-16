@@ -1,20 +1,25 @@
 package com.stefano.briky.controller;
 
 import com.stefano.briky.configuration.security.LoggedUser;
-import com.stefano.briky.json.ExpenceJson;
+import com.stefano.briky.json.ExpenseJson;
+import com.stefano.briky.json.ExpenseValue;
 import com.stefano.briky.json.TagJson;
+import com.stefano.briky.json.filter.EpochFilter;
+import com.stefano.briky.json.filter.SeriesFilter;
 import com.stefano.briky.model.Expenses;
 import com.stefano.briky.model.Tags;
 import com.stefano.briky.repository.ExpencesRepository;
+import com.stefano.briky.service.ExpenseService;
 import com.stefano.briky.service.TagService;
-import org.modelmapper.ModelMapper;
+import com.stefano.briky.utils.ConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.AccessException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -24,35 +29,44 @@ public class ExpenseController {
     ExpencesRepository expencesRepository;
 
     @Autowired
+    ExpenseService expenseService;
+
+    @Autowired
     TagService tagService;
 
     @Autowired
-    ModelMapper modelMapper;
+    ConvertUtils convertUtils;
 
+    @RequestMapping(value = "/expenses/value", method = RequestMethod.POST)
+    public List<ExpenseValue> listExpensesValue(@RequestBody EpochFilter filter) {
+        return expenseService.groupedValue(filter);
+    }
+
+    @RequestMapping(value = "/expenses/value/series", method = RequestMethod.POST)
+    public Map<String, List<ExpenseValue>> listExpensesSeriesValue(@RequestBody SeriesFilter filter) {
+        return expenseService.groupedValue(filter);
+    }
 
     @RequestMapping(value = "/expense", method = RequestMethod.POST)
-    public Expenses createExpense(@AuthenticationPrincipal LoggedUser principal, @RequestBody ExpenceJson json) {
-        List<Tags> checkedTags = convertAndCreate(json.getTags(), principal);
+    public Expenses createExpense(@AuthenticationPrincipal LoggedUser principal,
+                                  @RequestBody ExpenseJson json) {
 
-        Expenses expense = new Expenses(json);
-        expense.setUserId(principal.getId());
-        expense.setTags(checkedTags);
+        Expenses expense = convertUtils.toExpense(json);
 
-        expencesRepository.save(expense);
+        expenseService.create(expense, principal);
 
         return expense;
     }
 
     @RequestMapping(value = "/expense/{id}", method = RequestMethod.PUT)
     public Expenses updateExpense(@AuthenticationPrincipal LoggedUser principal,
-                                  @RequestBody ExpenceJson json,
+                                  @RequestBody ExpenseJson json,
                                   @PathVariable("id") int expenseId) throws AccessException {
 
         Expenses expense = expencesRepository.findByIdAndUserId(expenseId, principal.getId());
 
         if (null == expense) {
-            // TODO lanciare eccezione
-            throw new AccessException("aaa");
+            throw new AccessException("L'id della spesa indicata non appartiene a te");
         }
 
         List<Tags> checkedTags = convertAndCreate(json.getTags(), principal);
@@ -61,7 +75,7 @@ public class ExpenseController {
         expense.setLatitude(json.getLatitude());
         expense.setLongitude(json.getLongitude());
         expense.setAccuracy(json.getAccuracy());
-        expense.setUpdatedAt(new Date());
+        expense.setUpdatedAt(LocalDateTime.now());
         expense.setDescription(json.getDescription());
         expense.setTags(checkedTags);
 
@@ -72,11 +86,11 @@ public class ExpenseController {
 
     @RequestMapping(value = "/expense/{id}", method = RequestMethod.DELETE)
     public void updateExpense(@AuthenticationPrincipal LoggedUser principal,
-                                  @PathVariable("id") int expenseId) throws AccessException {
+                              @PathVariable("id") int expenseId) throws AccessException {
 
         Expenses expense = expencesRepository.findByIdAndUserId(expenseId, principal.getId());
 
-        if(null == expense) {
+        if (null == expense) {
             throw new AccessException("L'id della spesa indicata non appartiene a te");
         }
 
@@ -85,7 +99,7 @@ public class ExpenseController {
 
     private List<Tags> convetToTags(List<TagJson> tags) {
         return tags.stream()
-                .map(tag -> modelMapper.map(tag, Tags.class))
+                .map(convertUtils::toTag)
                 .collect(Collectors.toList());
     }
 
@@ -94,8 +108,4 @@ public class ExpenseController {
         return tagService.createIfNotExists(convertedTags, principal);
     }
 
-
-    public void aa() {
-
-    }
 }

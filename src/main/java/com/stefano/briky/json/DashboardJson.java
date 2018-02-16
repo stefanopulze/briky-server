@@ -7,7 +7,7 @@ public class DashboardJson {
     private Integer currentMonthValue;
     private Integer previousMonthValue;
 
-    private List<ExpenceJson> lastExpenses;
+    private List<ExpenseJson> lastExpenses;
     private List<TagExpenseValue> monthTagValue;
 
     public Integer getCurrentMonthValue() {
@@ -26,11 +26,11 @@ public class DashboardJson {
         this.previousMonthValue = previousMonthValue;
     }
 
-    public List<ExpenceJson> getLastExpenses() {
+    public List<ExpenseJson> getLastExpenses() {
         return lastExpenses;
     }
 
-    public void setLastExpenses(List<ExpenceJson> lastExpenses) {
+    public void setLastExpenses(List<ExpenseJson> lastExpenses) {
         this.lastExpenses = lastExpenses;
     }
 

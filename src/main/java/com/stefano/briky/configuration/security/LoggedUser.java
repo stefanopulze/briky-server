@@ -57,7 +57,6 @@ public class LoggedUser implements UserDetails {
         return true;
     }
 
-    @Override
     public String getName() {
         return name;
     }

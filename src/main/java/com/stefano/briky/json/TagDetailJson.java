@@ -6,7 +6,7 @@ import java.util.List;
 public class TagDetailJson extends TagJson {
 
     private Integer usedCount = 0;
-    private List<ExpenceJson> expenses = new ArrayList<>();
+    private List<ExpenseJson> expenses = new ArrayList<>();
 
     public Integer getUsedCount() {
         return usedCount;
@@ -16,11 +16,11 @@ public class TagDetailJson extends TagJson {
         this.usedCount = usedCount;
     }
 
-    public List<ExpenceJson> getExpenses() {
+    public List<ExpenseJson> getExpenses() {
         return expenses;
     }
 
-    public void setExpenses(List<ExpenceJson> expenses) {
+    public void setExpenses(List<ExpenseJson> expenses) {
         this.expenses = expenses;
     }
 }

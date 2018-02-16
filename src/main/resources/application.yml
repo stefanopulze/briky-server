@@ -1,14 +1,19 @@
-
 spring.datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/briky_local_test?useSSL=false
-#    url: jdbc:mysql://localhost:3306/briky_local_production?useSSL=false
+    url: jdbc:mysql://localhost:3306/briky_local?useSSL=false
     username: root
     password: root
 
-#spring.jackson.date-format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
 spring.jackson.date-format: "yyyy-MM-dd'T'HH:mm:ss'Z'"
 spring.jackson.serialization.write_dates_as_timestamps: false
 
 # Logging
 logging.level.org.hibernate.SQL: debug
+
+#dialogflow.api:
+#  client: f4c955728a65425fb3a6f366dd877cdd
+#  developer: c1f41c2d57df403db217f6dc00e822b5
+
+dialogflow.api:
+  client: ${dialog.api.client}
+  developer: ${dialog.api.developer}

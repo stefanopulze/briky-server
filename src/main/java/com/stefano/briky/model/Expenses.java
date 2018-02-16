@@ -1,10 +1,10 @@
 package com.stefano.briky.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.stefano.briky.json.ExpenceJson;
+import com.stefano.briky.json.ExpenseJson;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,32 +18,33 @@ public class Expenses {
     private Double longitude;
     private Integer accuracy;
     private String description;
-    private Date createdAt;
-    private Date updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     private List<Tags> tags = new ArrayList<>();
 
     public Expenses() {
     }
 
-    public Expenses(ExpenceJson json) {
+    public Expenses(ExpenseJson json) {
         value = json.getValue();
         latitude = json.getLatitude();
         longitude = json.getLongitude();
         accuracy = json.getAccuracy();
         description = json.getDescription();
-        if(null == json.getCreatedAt()) {
-            createdAt = new Date();
+        if (null == json.getCreatedAt()) {
+            createdAt = LocalDateTime.now();
         } else {
             createdAt = json.getCreatedAt();
         }
-        updatedAt = new Date();
+        updatedAt = LocalDateTime.now();
 
-        tags = json.getTags()
+        /*tags = json.getTags()
                 .stream()
                 .map(Tags::new)
                 .collect(Collectors.toList());
-                //.forEach(tag -> tag.setExpence(this));
+        //.forEach(tag -> tag.setExpence(this));
+        */
     }
 
     @Id
@@ -118,29 +119,29 @@ public class Expenses {
 
     @Basic
     @Column(name = "created_at", nullable = true)
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
     @Basic
     @Column(name = "updated_at", nullable = true)
-    public Date getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "expenses_tags",
-            joinColumns = { @JoinColumn(name = "expense_id", referencedColumnName = "id") },
-            inverseJoinColumns = { @JoinColumn(name = "tag_id", referencedColumnName = "id") }
+            joinColumns = {@JoinColumn(name = "expense_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "tag_id", referencedColumnName = "id")}
     )
     public List<Tags> getTags() {
         return tags;

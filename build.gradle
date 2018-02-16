@@ -37,14 +37,12 @@ dependencies {
 
 	// Database
 	compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
-	//compile group: 'org.postgresql', name: 'postgresql', version: '42.1.4'
-
-
 
 	// Utils
 	compile group: 'org.modelmapper', name: 'modelmapper', version: '1.1.1'
 	compile group: 'com.google.guava', name: 'guava', version: '23.4-jre'
-
+	compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.5'
+	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.security:spring-security-test')

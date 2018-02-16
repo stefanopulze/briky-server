@@ -33,22 +33,13 @@ public class StatsController {
     ModelMapper modelMapper;
 
 
-    @RequestMapping(value = "/stat/tag/most-used")
-    public void mostUsedTag(DatePagination pagination) {
-    }
-
-    @RequestMapping(value = "/stat/tag/expense")
-    public void expenseForTag(DatePagination pagination) {
-
-    }
-
     @Transactional
     @RequestMapping(value = "/stat/monthly/expense")
     public List<TagExpenseValue> monthlyExpenses(
             @AuthenticationPrincipal LoggedUser user,
             MonthFilter pagination) {
 
-        if(null == pagination) {
+        if (null == pagination) {
             pagination = BrikyDateUtils.buildCurrentMonth();
         }
 
@@ -60,7 +51,7 @@ public class StatsController {
             @AuthenticationPrincipal LoggedUser user,
             MonthFilter pagination) {
 
-        if(null == pagination) {
+        if (null == pagination) {
             pagination = BrikyDateUtils.buildCurrentMonth();
         }
 
@@ -71,7 +62,7 @@ public class StatsController {
     public DashboardJson dashboardStats(MonthFilter pagination, @AuthenticationPrincipal LoggedUser user) {
         DashboardJson result = new DashboardJson();
 
-        if(null == pagination || pagination.isEmpty()) {
+        if (null == pagination || pagination.isEmpty()) {
             pagination = BrikyDateUtils.buildCurrentMonth();
         }
 
@@ -87,7 +78,7 @@ public class StatsController {
         List<Expenses> lastExpenses = expenseService.findLast(10);
         result.setLastExpenses(
                 lastExpenses.stream()
-                        .map(expense -> modelMapper.map(expense, ExpenceJson.class))
+                        .map(expense -> modelMapper.map(expense, ExpenseJson.class))
                         .collect(Collectors.toList()));
 
         //result.setMonthTagValue(monthlyExpenses(user, previousMonth));

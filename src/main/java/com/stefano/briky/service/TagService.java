@@ -19,6 +19,7 @@ public class TagService {
     @Autowired
     TagSlugger tagSlugger;
 
+
     public Tags createIfNotExists(Tags tag, LoggedUser principal) {
 
         String slug = tagSlugger.calculateSlug(tag);
@@ -45,8 +46,9 @@ public class TagService {
         return checkedTags;
     }
 
-
     public Integer countTagUsage(int tagId) {
         return tagRepository.countById(tagId);
     }
+
+
 }

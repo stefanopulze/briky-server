@@ -1,7 +1,7 @@
 package com.stefano.briky.controller;
 
 import com.stefano.briky.configuration.security.LoggedUser;
-import com.stefano.briky.json.ExpenceJson;
+import com.stefano.briky.json.ExpenseJson;
 import com.stefano.briky.json.TagDetailJson;
 import com.stefano.briky.json.TagJson;
 import com.stefano.briky.model.Expenses;
@@ -55,7 +55,7 @@ public class TagController {
         TagDetailJson json = modelMapper.map(tag, TagDetailJson.class);
         json.setUsedCount(tagService.countTagUsage(id));
 
-        json.setExpenses(expenses.stream().map(expense -> modelMapper.map(expense, ExpenceJson.class)).collect(Collectors.toList()));
+        json.setExpenses(expenses.stream().map(expense -> modelMapper.map(expense, ExpenseJson.class)).collect(Collectors.toList()));
 
 
         return json;

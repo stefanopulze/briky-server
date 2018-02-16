@@ -8,3 +8,7 @@ spring.datasource:
 # Date Format
 spring.jackson.date-format: "yyyy-MM-dd'T'HH:mm:ss'Z'"
 spring.jackson.serialization.write_dates_as_timestamps: false
+
+dialogflow.api:
+  client: ${dialog.api.client}
+  developer: ${dialog.api.developer}
