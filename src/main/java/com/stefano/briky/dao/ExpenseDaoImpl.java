@@ -7,6 +7,7 @@ import com.stefano.briky.json.MonthValue;
 import com.stefano.briky.json.filter.EpochFilter;
 import com.stefano.briky.model.Expenses;
 import com.stefano.briky.model.Tags;
+import com.stefano.briky.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +28,7 @@ public class ExpenseDaoImpl implements ExpenseDao {
 
     @Override
     public List<ExpenseValue> groupedValue(EpochFilter filter) {
+        int userId = SecurityUtils.getUser().getId();
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Object[]> query = builder.createQuery(Object[].class);
         Root<Expenses> from = query.from(Expenses.class);
@@ -35,6 +37,8 @@ public class ExpenseDaoImpl implements ExpenseDao {
 
         EpochCriteriaBuilder ecb = new EpochCriteriaBuilder(builder, filter.getGroup());
         Path<LocalDateTime> createdAt = from.get("createdAt");
+
+        where.add(builder.equal(from.get("userId"), userId));
 
         if (filter.getFrom() != null) {
             where.add(builder.greaterThanOrEqualTo(
