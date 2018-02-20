@@ -32,4 +32,6 @@ public interface ExpencesRepository extends JpaRepository<Expenses, Integer> {
             "and year(createdAt)=:#{#pagination.year} " +
             "and month(createdAt)=:#{#pagination.monthSql}")
     Integer monthlySum(@Param("userId") int userId, @Param("pagination") MonthFilter pagination);
+
+    boolean existsByIdAndUserId(int id, int userId);
 }

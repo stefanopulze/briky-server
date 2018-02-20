@@ -1,6 +1,9 @@
 package com.stefano.briky.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.stefano.briky.json.ExpenseJson;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -20,6 +23,7 @@ public class Expenses {
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Categories category;
 
     private List<Tags> tags = new ArrayList<>();
 
@@ -149,6 +153,16 @@ public class Expenses {
 
     public void setTags(List<Tags> tags) {
         this.tags = tags;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    public Categories getCategory() {
+        return category;
+    }
+
+    public void setCategory(Categories category) {
+        this.category = category;
     }
 
     @Override

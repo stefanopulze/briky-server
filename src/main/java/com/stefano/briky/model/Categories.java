@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Tags {
+public class Categories {
     private int id;
     private String name;
     private String slug;
@@ -19,16 +19,12 @@ public class Tags {
     private Users user;
     private List<Expenses> expenses = new ArrayList<>();
 
-    public Tags() {
+    public Categories() {
     }
 
-    public Tags(TagJson json) {
+    public Categories(TagJson json) {
         id = json.getId();
         name = json.getName();
-    }
-
-    public Tags(String name) {
-        this.name = name;
     }
 
     @Id
@@ -79,7 +75,7 @@ public class Tags {
     }
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     public List<Expenses> getExpenses() {
         return expenses;
     }
@@ -104,9 +100,9 @@ public class Tags {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Tags)) return false;
+        if (!(o instanceof Categories)) return false;
 
-        Tags tags = (Tags) o;
+        Categories tags = (Categories) o;
 
         return id == tags.id;
     }
@@ -118,7 +114,7 @@ public class Tags {
 
     @Override
     public String toString() {
-        return "Tags{" +
+        return "Categories{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';

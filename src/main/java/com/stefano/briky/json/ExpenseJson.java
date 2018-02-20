@@ -14,6 +14,7 @@ public class ExpenseJson {
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private CategoryJson category;
 
     private List<TagJson> tags = new ArrayList<>();
 
@@ -97,4 +98,11 @@ public class ExpenseJson {
         this.tags = tags;
     }
 
+    public CategoryJson getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryJson category) {
+        this.category = category;
+    }
 }

@@ -36,7 +36,7 @@ public class TagController {
     public TagJson createTag(@AuthenticationPrincipal LoggedUser principal, @RequestBody TagJson json) {
         Tags tag = modelMapper.map(json, Tags.class);
 
-        tag = tagService.createIfNotExists(tag, principal);
+        tag = tagService.createIfNotExists(tag, principal.getId());
 
         return modelMapper.map(tag, TagJson.class);
     }

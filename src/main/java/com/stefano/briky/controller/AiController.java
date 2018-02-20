@@ -69,7 +69,7 @@ public class AiController {
             }
         }
 
-        expenseService.create(expense, principal);
+        expenseService.create(expense);
 
         return new AiQueryResponse(
                 response,
